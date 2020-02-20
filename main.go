@@ -1,10 +1,10 @@
-// Package rssprocessor
-package rssprocessor
+package main
 
 import (
+	"fmt"
 	"github.com/gideon-maina/rss-processor/search"
 )
 
 func main() {
-	search.Hello()
+	fmt.Println(search.Hello())
 }
