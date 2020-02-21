@@ -6,7 +6,7 @@ import (
 )
 
 func TestMain(t *testing.T) {
-	expected := "Hello"
+	expected := "From the search module."
 	actual := Hello()
 	if actual != expected {
 		fmt.Println("Test Failed")

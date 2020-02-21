@@ -1,3 +1,4 @@
+//Package search helps in searching
 package search
 
 import (
