@@ -4,7 +4,28 @@ import (
 	"encoding/xml"
 )
 
-type CNNRss struct {
+type Source struct {
+	Id            int
+	Publisher     string
+	Url           string
+	Topic         string
+	Description   string
+	LastBuildDate string
+	DateCreated   string
+	DateModified  string
+}
+type Feed struct {
+	Id           int
+	SourceId     int
+	Title        string
+	Description  string
+	Link         string
+	Guid         string
+	PubDate      string
+	DateCreated  string
+	DateModified string
+}
+type RSSData struct {
 	XMLName    xml.Name `xml:"rss"`
 	Text       string   `xml:",chardata"`
 	Dc         string   `xml:"dc,attr"`
