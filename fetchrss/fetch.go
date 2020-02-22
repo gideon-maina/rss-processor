@@ -1,3 +1,5 @@
+//Package provides the types and functions to fetch RSS xml files from sources (stored in a DB) and updating newer feeds with
+// each subsequent run.
 package fetchrss
 
 import (
@@ -6,6 +8,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"github.com/gideon-maina/rss-processor/db"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -23,7 +26,10 @@ type RSSXML struct {
 	Content []byte
 }
 
-func GetRSSSources(conn *sql.DB) ([]Source, error) {
+func GetRSSSources() ([]Source, error) {
+	conn := db.Conn()
+	defer conn.Close()
+
 	sources := []Source{}
 	sourceRows, err := conn.Query("SELECT id,publisher,url,topic,description,lastBuildDate,dateModified,dateCreated FROM sources;")
 	if err != nil {
@@ -50,7 +56,10 @@ func GetRSSXML(url string) (*RSSXML, error) {
 
 	return &RSSXML{Content: body}, nil
 }
-func StoreFeeds(conn *sql.DB, sourceId int, xmlContent *RSSXML) error {
+func StoreFeeds(sourceId int, xmlContent *RSSXML) error {
+	conn := db.Conn()
+	defer conn.Close()
+
 	transaction, err := conn.Begin()
 	saveFeed := false
 
