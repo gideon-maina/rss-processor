@@ -161,8 +161,8 @@ func FetchAndStoreRSSFeeds() {
 	for _, sourceVal := range sources {
 		source := sourceVal // To enable concurrency force variable evaluation each time in loop
 		log.Println("--------------------------- Getting RSS Data for ", source.Url, "-------------------------------")
+		waitgroup.Add(1)
 		go func() {
-			waitgroup.Add(1)
 			xmlContent, err := GetRSSXML(source.Url)
 			if err != nil {
 				fmt.Println("Error ranging sources :>", err)
