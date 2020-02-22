@@ -8,8 +8,15 @@ import (
 	"log"
 )
 
+const (
+	DbName     = "rssfeeds"
+	DbUser     = "root"
+	DbPassword = "admin"
+)
+
 func Conn() *sql.DB {
-	conn, err := sql.Open("mysql", "root:admin@/rssfeeds")
+	creds := fmt.Sprintf("%v:%v@/%v", DbUser, DbPassword, DbName)
+	conn, err := sql.Open("mysql", creds)
 	if err != nil {
 		fmt.Println("Error in db opening :>", err)
 		log.Fatal(err)

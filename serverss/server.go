@@ -10,10 +10,15 @@ import (
 	"strings"
 )
 
+const (
+	port = ":9000"
+)
+
 // Open a server at port 9000 to serve clients requests
 func ServeClients() error {
+	log.Println("Server running at port ", port, ". Ready to process search requests")
 	http.HandleFunc("/search", SearchAndRespond)
-	if err := http.ListenAndServe(":9000", nil); err != nil {
+	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatal("Can't create server", err)
 	}
 	return nil

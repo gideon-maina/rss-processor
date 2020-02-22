@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 )
 
@@ -143,6 +144,41 @@ func StoreFeeds(sourceId int, xmlContent *RSSXML) error {
 		}
 	}
 	return transaction.Commit()
+}
+
+// For each of our sources in the DB launch a new go routine to fetch it's RSS feeds and store them if newer
+func FetchAndStoreRSSFeeds() {
+	var waitgroup sync.WaitGroup
+
+	// Get the sources of the feeds from the DB
+	sources, err := GetRSSSources()
+	if err != nil {
+		fmt.Println("Error in getting RSS sources from DB:>", err)
+		log.Fatal(err)
+	}
+
+	// Range through the sources and fetch their respective RSS xml files concurrently
+	for _, sourceVal := range sources {
+		source := sourceVal // To enable concurrency force variable evaluation each time in loop
+		log.Println("--------------------------- Getting RSS Data for ", source.Url, "-------------------------------")
+		go func() {
+			waitgroup.Add(1)
+			xmlContent, err := GetRSSXML(source.Url)
+			if err != nil {
+				fmt.Println("Error ranging sources :>", err)
+			}
+			// Store the rss feeds in the DB
+			err = StoreFeeds(source.Id, xmlContent)
+			if err != nil {
+				fmt.Println("Failed to store the RSS feeds")
+			}
+			waitgroup.Done()
+		}()
+	}
+
+	waitgroup.Wait()
+	log.Println("Done Fetching RSS.")
+
 }
 
 func getLastSavedFeed(conn *sql.DB, sourceID int) (Feed, error) {
