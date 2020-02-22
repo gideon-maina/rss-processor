@@ -23,6 +23,19 @@ type RSSXML struct {
 	Content []byte
 }
 
+func GetRSSSources(conn *sql.DB) ([]Source, error) {
+	sources := []Source{}
+	sourceRows, err := conn.Query("SELECT id,publisher,url,topic,description,lastBuildDate,dateModified,dateCreated FROM sources;")
+	if err != nil {
+		return nil, err
+	}
+	for sourceRows.Next() {
+		var source Source
+		err = sourceRows.Scan(&source.Id, &source.Publisher, &source.Url, &source.Topic, &source.Description, &source.LastBuildDate, &source.DateModified, &source.DateCreated)
+		sources = append(sources, source)
+	}
+	return sources, nil
+}
 func GetRSSXML(url string) (*RSSXML, error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -63,10 +76,12 @@ func StoreFeeds(conn *sql.DB, sourceId int, xmlContent *RSSXML) error {
 		log.Fatal(err)
 	}
 
-	for _, value := range feedSourceResults {
+	for _, val := range feedSourceResults {
+		value := val // force value evaluation on each loop to enable go routines work
 		// fmt.Printf("%T", value.Channel.Item, " Is the TYPE of the news Items\n")
 		// For all the news items in the feed items slice loop over and save them if they are newer than last record
-		for _, newsItem := range value.Channel.Item {
+		for _, newsItemVal := range value.Channel.Item {
+			newsItem := newsItemVal // force evaluation of newsItem each time in the loop
 			title := newsItem.Title
 			description := newsItem.Description
 			link := newsItem.Link
