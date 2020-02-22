@@ -16,11 +16,12 @@ const (
 
 // Open a server at port 9000 to serve clients requests
 func ServeClients() error {
-	log.Println("Server running at port ", port, ". Ready to process search requests")
 	http.HandleFunc("/search", SearchAndRespond)
 	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Println("Failed to start, Retrying.")
 		log.Fatal("Can't create server", err)
 	}
+	log.Println("Server running at port ", port, ". Ready to process search requests")
 	return nil
 }
 

@@ -15,10 +15,10 @@ const (
 )
 
 func Conn() *sql.DB {
-	creds := fmt.Sprintf("%v:%v@/%v", DbUser, DbPassword, DbName)
+	creds := fmt.Sprintf("%v:%v@tcp(RSSProcessorDockerDB)/%v", DbUser, DbPassword, DbName) // Include name of container for tcp i.e @tcp(container name) for Docker to work
 	conn, err := sql.Open("mysql", creds)
 	if err != nil {
-		fmt.Println("Error in db opening :>", err)
+		fmt.Println("Error can't open DB connection :>", err)
 		log.Fatal(err)
 	}
 	return conn

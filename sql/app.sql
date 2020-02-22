@@ -24,14 +24,16 @@ DROP TABLE IF EXISTS `feeds`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `feeds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) DEFAULT NULL,
-  `description` varchar(1000) DEFAULT NULL,
-  `link` varchar(1000) DEFAULT NULL,
+  `source_id` int(11) DEFAULT NULL,
+  `title` varchar(500) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `link` varchar(500) DEFAULT NULL,
   `guid` text DEFAULT NULL,
   `pubDate` datetime DEFAULT NULL,
   `dateCreated` datetime DEFAULT NULL,
   `dateModified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `title` (`title`,`description`,`link`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -56,12 +58,12 @@ CREATE TABLE `sources` (
   `publisher` varchar(50) DEFAULT NULL,
   `url` varchar(500) DEFAULT NULL,
   `topic` varchar(50) DEFAULT NULL,
-  `description` varchar(1000) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
   `lastBuildDate` datetime DEFAULT NULL,
   `dateCreated` datetime DEFAULT NULL,
   `dateModified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +72,7 @@ CREATE TABLE `sources` (
 
 LOCK TABLES `sources` WRITE;
 /*!40000 ALTER TABLE `sources` DISABLE KEYS */;
-INSERT INTO `sources` VALUES (1,'cnn','http://rss.cnn.com/rss/edition_motorsport.rss','CNN.com - RSS Channel - Sport - Motorsport','CNN.com delivers up-to-the-minute news and information on the latest top stories, weather, entertainment, politics and more.','2020-02-21 11:24:00','2020-02-21 13:09:33','2020-02-21 10:09:33'),(2,'bbc','http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml','BBC News - Technology','Technology','2020-02-21 11:22:00','2020-02-21 13:10:21','2020-02-21 10:10:21');
+INSERT INTO `sources` VALUES (1,'cnn','http://rss.cnn.com/rss/edition_motorsport.rss','CNN.com - RSS Channel - Sport - Motorsport','CNN.com delivers up-to-the-minute news and information on the latest top stories, weather, entertainment, politics and more.','2020-02-21 11:24:00','2020-02-21 13:09:33','2020-02-21 10:09:33'),(2,'bbc','http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml','BBC News - Technology','Technology','2020-02-21 11:22:00','2020-02-21 13:10:21','2020-02-21 10:10:21'),(3,'bbc','http://feeds.bbci.co.uk/news/business/rss.xml','BBC News - Business','Business','2020-02-21 11:22:00','2020-02-21 20:12:03','2020-02-21 17:12:03'),(4,'cnn','http://rss.cnn.com/rss/edition_travel.rss','CNN Travel','Travel','2020-02-21 11:22:00','2020-02-21 20:15:52','2020-02-21 17:15:52'),(5,'cnn','http://rss.cnn.com/rss/edition_world.rss','CNN.com - RSS Channel - World','World','2020-02-21 11:22:00','2020-02-21 20:53:29','2020-02-21 17:53:29'),(6,'cnn','http://rss.cnn.com/rss/edition_europe.rss','CNN.com - RSS Channel - Europe','Europe','2020-02-21 11:22:00','2020-02-21 20:56:40','2020-02-21 17:56:40'),(7,'bbc','http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml','Entertainment & Arts','Entertainment & Arts','2020-02-21 11:22:00','2020-02-21 21:09:50','2020-02-21 18:09:50'),(8,'telegraph','https://www.telegraph.co.uk/sport/rss.xml','The Telegraph Sport','Sport','2020-02-22 08:22:00','2020-02-22 08:32:36','2020-02-22 05:34:49');
 /*!40000 ALTER TABLE `sources` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -83,5 +85,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-21 13:22:15
+-- Dump completed on 2020-02-22 17:53:08
 

@@ -1,0 +1,22 @@
+version: "3"
+services:
+    mysql-db-rss-processor:
+        container_name: "RSSProcessorDockerDB"
+        image: "mariadb"
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_DATABASE: rssfeeds
+            MYSQL_USER: root
+        volumes:
+            - ./sql:/docker-entrypoint-initdb.d
+        ports:
+            - '10006:3306'
+    rss-processor:
+        container_name: "RSSProcessor"
+        build: 
+            context: .
+        ports:
+            - "9000:9000"
+        depends_on: 
+            - "mysql-db-rss-processor"
+        command: bash -c "/app/wait-for-it.sh --timeout=0 mysql-db-rss-processor:3306 -- go run main.go"

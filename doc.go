@@ -4,6 +4,9 @@
 
 Basics
 
+N.B the added RSS sources in the DB are not exhaustive and others from the publishers can be added to the table and get processed on
+the next run.
+
 Architecture
 
 Types
