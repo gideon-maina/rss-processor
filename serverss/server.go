@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"sync"
 )
 
 const (
@@ -29,22 +30,36 @@ func ServeClients() error {
 func SearchAndRespond(w http.ResponseWriter, r *http.Request) {
 	conn := db.Conn()
 	defer conn.Close()
+	var waitgroup sync.WaitGroup
 
-	searchQuery := r.URL.Query().Get("q")
-	searchQuery = sanitizeInput(searchQuery)
-	log.Println("Searching for ", searchQuery)
-	searchResults, err := search.GetSearchResults(conn, searchQuery)
-	if err != nil {
-		log.Fatal("Can't get results for search query", err)
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
 	}
 
-	jsonResults, err := json.Marshal(searchResults)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// Set the Content-Type to json
-	w.Header().Add("Content-Type", "application/json")
-	w.Write(jsonResults)
+	waitgroup.Add(1)
+	go func(w http.ResponseWriter, r *http.Request) {
+		searchQuery := r.URL.Query().Get("q")
+		searchQuery = sanitizeInput(searchQuery)
+		log.Println("Searching for ", searchQuery)
+		searchResults, err := search.GetSearchResults(conn, searchQuery)
+		if err != nil {
+			log.Fatal("Can't get results for search query", err)
+			return
+		}
+
+		jsonResults, err := json.Marshal(searchResults)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		// Set the Content-Type to json
+		w.Header().Add("Content-Type", "application/json")
+		w.Write(jsonResults)
+		waitgroup.Done()
+		return
+	}(w, r)
+	waitgroup.Wait()
 }
 
 // Sanitize customer input from the query given, just removes !\ and $ , for now it's a naive approach
