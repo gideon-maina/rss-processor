@@ -18,9 +18,11 @@ the next run.
 # Architecture
 
 The application has three main packages.
+
     1. fetchrss
     2. serverss
     3. searchrss
+    
 The packages are called and composed in the main function to start up the application.
 First the application fetches feeds for RSS sources defined in the Database and stores them locally.
 Thereafter periodically after 5 minutes the fetchrss package fetches the RSS feeds and updates the local database with newer feeds.
@@ -44,6 +46,7 @@ To enable quick running, a docker-compose file is present in the directory and t
 The docker file creates two containers one for the MySQL db and one for the RSS processor app (this app).
 
 Then you can  query to get feeds for a given query
+    
     $ curl http://localhost:9000/search?q=lewis+hamilton
 
 # Schema
