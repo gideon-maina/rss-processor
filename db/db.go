@@ -14,6 +14,7 @@ const (
 	DbPassword = "admin"
 )
 
+// Create and return a database connection for our DB
 func Conn() *sql.DB {
 	creds := fmt.Sprintf("%v:%v@tcp(RSSProcessorDockerDB)/%v", DbUser, DbPassword, DbName) // Include name of container for tcp i.e @tcp(container name) for Docker to work
 	conn, err := sql.Open("mysql", creds)

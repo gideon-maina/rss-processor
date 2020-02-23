@@ -22,11 +22,12 @@ const (
 	TimeToMySQLLayout = "2006-01-02 15:04:05"
 )
 
-// For each of the sources of the rss feeds have a struct for them containing all the XML as a string and whether it's done read
+// For each of the sources of the rss feeds have a struct for them containing all the XML as a string
 type RSSXML struct {
 	Content []byte
 }
 
+// From the database read the `sources` table and return all the currently avaialbe RSS sources
 func GetRSSSources() ([]Source, error) {
 	conn := db.Conn()
 	defer conn.Close()
@@ -43,6 +44,8 @@ func GetRSSSources() ([]Source, error) {
 	}
 	return sources, nil
 }
+
+// For a given RSS do a http GET and return an RSSXML type with the xml contents
 func GetRSSXML(url string) (*RSSXML, error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -57,6 +60,8 @@ func GetRSSXML(url string) (*RSSXML, error) {
 
 	return &RSSXML{Content: body}, nil
 }
+
+// For a given source XML content parse it and store the feeds in the publication if newer or on first run
 func StoreFeeds(sourceId int, xmlContent *RSSXML) error {
 	conn := db.Conn()
 	defer conn.Close()
