@@ -41,8 +41,10 @@ and thereafter visiting
 
 # Deployment
 
-To enable quick running, a docker-compose file is present in the directory and the app can be started with.
+To enable quick running, a docker-compose file is present in the directory and the app can be started with the below command after cloming the repo.
+    
     $ docker-compose up
+    
 The docker file creates two containers one for the MySQL db and one for the RSS processor app (this app).
 
 Then you can  query to get feeds for a given query
