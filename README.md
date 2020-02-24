@@ -55,3 +55,10 @@ Then you can  query to get feeds for a given query
 
 The schema is under the sql/ directory and is automatically used by the docker containers to bootstrap the DB.
 
+You can also run this command to inspect the database in the running container.
+
+    $ docker exec -it RSSProcessorDockerDB /usr/bin/mysql -u root -padmin rssfeeds
+
+# Possible improvements
+
+Pass the duration to refresh the feeds as an arg to the program i.e using os.Args (left this as the project is for demo purposes)
