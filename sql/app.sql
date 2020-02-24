@@ -25,9 +25,9 @@ DROP TABLE IF EXISTS `feeds`;
 CREATE TABLE `feeds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `source_id` int(11) DEFAULT NULL,
-  `title` varchar(500) DEFAULT NULL,
-  `description` varchar(500) DEFAULT NULL,
-  `link` varchar(500) DEFAULT NULL,
+  `title` varchar(1000) DEFAULT NULL,
+  `description` varchar(2000) DEFAULT NULL,
+  `link` varchar(1000) DEFAULT NULL,
   `guid` text DEFAULT NULL,
   `pubDate` datetime DEFAULT NULL,
   `dateCreated` datetime DEFAULT NULL,
