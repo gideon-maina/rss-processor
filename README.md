@@ -36,6 +36,7 @@ The server package utilizes the search package to search and return matching res
 To make requests to the server one needs to abtain a JWT token string and attach it to the following requests to the server.
 To get a valid token, issue the request below.
 N.B This is an open endpoint to get the token and is for (demo security puposes)
+
     $ curl http://localhost:9000/get-token
     Sample response
     ```
