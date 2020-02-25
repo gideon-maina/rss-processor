@@ -49,5 +49,12 @@ Schema
 
 The schema is under the sql/ directory and is automatically used by the docker containers to bootstrap the DB.
 
+Running
+
+NB.Since docker containers need a prefix of their names in order to connect to them via TCP, you might need to update `db/db.go` to remove docker specific fields
+
+Pass the duration to refresh the feeds as an arg to the program, the default is 5 minutes.
+
+    $ go run main.go -refresh=<minutes>
 */
 package main
