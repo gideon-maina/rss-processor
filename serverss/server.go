@@ -17,7 +17,10 @@ const (
 
 // Open a server at port 9000 to serve clients requests
 func ServeClients() error {
-	http.HandleFunc("/search", SearchAndRespond)
+	// Allow a url to get tokens
+	http.HandleFunc("/get-token", GetToken)
+	// For all other endpoints make sure the client is authorized
+	http.Handle("/search", IsAuthorized(SearchAndRespond))
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Println("Failed to start, Retrying.")
 		log.Fatal("Can't create server", err)
