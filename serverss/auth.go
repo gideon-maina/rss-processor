@@ -15,6 +15,8 @@ type Token struct {
 	JWTTokenValue string
 }
 
+// Test whether a given request has a Token and if it's Valid before allowing access to an endpoint
+// The Tokens are given freely at the moment by an endpoint in the app (this will not be the case in prod
 func IsAuthorized(endpoint func(http.ResponseWriter, *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header["Token"] != nil {

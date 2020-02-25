@@ -28,6 +28,19 @@ The main programme also starts a http server (on port 9000) on a separate gorout
 
 The server package utilizes the search package to search and return matching results from the feeds in the database. The search is dependent on FULL TEXT search for MySQL databases.
 
+# Security
+
+To make requests to the server one needs to abtain a JWT token string and attach it to the following requests to the server.
+To get a valid token, issue the request below.
+N.B This is an open endpoint to get the token and is for (demo security puposes)
+    $ curl http://localhost:9000/get-token
+    Sample response
+    ```
+    {
+       "JWTTokenValue" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJjbGllbnQiOiJEZW1vIEF1dGggVXNlciIsImV4cCI6MTU4MjYzNTg5MX0.Izgu_9b1eS8HIEFPzYeRK7nFJruYNGnZMGqlyF8l3mY"
+    }```
+
+
 Documentation
 
 The documentation can be read using the godoc tool by running the command
@@ -43,7 +56,7 @@ To enable quick running, a docker-compose file is present in the directory and t
 The docker file creates two containers one for the MySQL db and one for the RSS processor app (this app).
 
 Then you can  query to get feeds for a given query
-    $ curl http://localhost:9000/search?q=lewis+hamilton
+    $ curl http://localhost:9000/search?q=lewis+hamiliton  -H "Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJjbGllbnQiOiJEZW1vIEF1dGggVXNlciIsImV4cCI6MTU4MjYzNTg5MX0.Izgu_9b1eS8HIEFPzYeRK7nFJruYNGnZMGqlyF8l3mY"
 
 Schema
 
