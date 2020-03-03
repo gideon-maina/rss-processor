@@ -33,4 +33,4 @@ Score: 4/5 ==> Exceeds Expectations
  2. We could implement RateLimiting to prevent potential DDOS attacks. (I know this is an overkill, but would be nice if it was written as TODO in Readme ;))
  
  # Summary
- ## Overall Average Rating = 3.7/5
+ ## Overall Average Rating = 3.7/5 ==> Meets Expectations
